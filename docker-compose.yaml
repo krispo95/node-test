@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  node-service:
+    image: node:latest
+    volumes:
+      - ./app:/app
+    command: node /app/index.js
+    ports: 
+      - 3001:3000
+#    depends_on:
+#      - mongo
+#
+#  mongo:
+#    image: mongo:3.4.20
+#    ports:
+#      - 27017:27017
