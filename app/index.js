@@ -41,12 +41,18 @@ async function main () {
         res.json(a)
     })
 
+
+    app.post('/json', function (req, res) {
+        console.log(req.body)
+        // var a = req.body.x + req.body.y
+        res.json(req.body)
+    })
+
     app.get('/xml', function (req, res) {
         console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         parser.parseString(xml_string, function(error, result) {
             if(error === null) {
-                console.log(result);
-                res.json(result)
+                res.json(result);
             }
             else {
                 console.log(error);

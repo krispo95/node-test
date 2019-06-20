@@ -6,7 +6,7 @@ services:
       - ./app:/app
     command: node /app/index.js
     ports: 
-      - 3001:3000
+      - 3000:3000
 #    depends_on:
 #      - mongo
 #
