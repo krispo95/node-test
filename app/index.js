@@ -14,10 +14,8 @@ async function main () {
     const parser = new xml2js.Parser({ attrkey: "ATTR" });
     let xml_string = fs.readFileSync("app/registers.xml", "utf8");
 
-// Intermediate obj
-//     var tObj = parser.getTraversalObj(xmlData,options);
-//     var jsonObj = parser.convertToJson(tObj,options);
-
+    var _ = require('lodash');
+    var fp = require('lodash/fp');
     app.get('/', function (req, res) {
         res.send('Hello Me');
     });
@@ -25,22 +23,17 @@ async function main () {
     app.listen(3000, function () {
         console.log('Example app listening on port 3000!');
 
-        parser.parseString(xml_string, function(error, result) {
-            if(error === null) {
-                console.log(result);
-            }
-            else {
-                console.log(error);
-            }
-        });
+        // parser.parseString(xml_string, function(error, result) {
+        //     if(error === null) {
+        //         console.log(result);
+        //     }
+        //     else {
+        //         console.log(error);
+        //     }
+        // });
+
+        jsonQueryTest(_, fp)
     });
-
-    app.post('/sum', function (req, res) {
-        console.log(req.body)
-        var a = req.body.x + req.body.y
-        res.json(a)
-    })
-
 
     app.post('/json', function (req, res) {
         console.log(req.body)
@@ -59,14 +52,32 @@ async function main () {
             }
         });
     })
-
-    app.get('/users', function (req, res) {
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        collection.find().toArray((err, items) => {
-            console.log(items)
-            res.json(items)
-          })
-    })
-
 }
 main()
+
+function jsonQueryTest (_, fp) {
+    // var itemFrom = {
+    //     name: 'name',
+    //     price: 'price',
+    //     count: 'count'
+    // }
+    // var rools = {
+    //     name: 'itemFrom.name',
+    //     count: itemFrom.count
+    // }
+    // var itemTo = {
+    //     name: rools.name
+    // }
+
+    let contact1 = {
+        name: 'Sherlock Holmes',
+        phone: ['555-123-456']
+    };
+    let contact2 = {
+        address: '221B Baker Street',
+        phone: ['555-654-321']
+    };
+
+    console.log(_.merge(contact1, contact2))
+    console.log(fp.map(parseInt)(['6', '8', '10']))
+}
