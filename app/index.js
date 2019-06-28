@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 
-async function main () {
+async function main() {
 
     app.use(express.urlencoded());
 
@@ -11,7 +11,7 @@ async function main () {
 
     const xml2js = require('xml2js');
     const fs = require('fs');
-    const parser = new xml2js.Parser({ attrkey: "ATTR" });
+    const parser = new xml2js.Parser({attrkey: "ATTR"});
     let xml_string = fs.readFileSync("app/registers.xml", "utf8");
 
     var _ = require('lodash');
@@ -43,41 +43,46 @@ async function main () {
 
     app.get('/xml', function (req, res) {
         console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        parser.parseString(xml_string, function(error, result) {
-            if(error === null) {
+        parser.parseString(xml_string, function (error, result) {
+            if (error === null) {
                 res.json(result);
-            }
-            else {
+            } else {
                 console.log(error);
             }
         });
     })
 }
+
 main()
 
-function jsonQueryTest (_, fp) {
-    // var itemFrom = {
-    //     name: 'name',
-    //     price: 'price',
-    //     count: 'count'
-    // }
-    // var rools = {
-    //     name: 'itemFrom.name',
-    //     count: itemFrom.count
-    // }
-    // var itemTo = {
-    //     name: rools.name
-    // }
-
-    let contact1 = {
-        name: 'Sherlock Holmes',
-        phone: ['555-123-456']
-    };
-    let contact2 = {
-        address: '221B Baker Street',
-        phone: ['555-654-321']
-    };
-
-    console.log(_.merge(contact1, contact2))
-    console.log(fp.map(parseInt)(['6', '8', '10']))
+function jsonQueryTest(_, fp) {
+    var source = {
+        item: {
+            name: 'first_item',
+            price: 999,
+            count: 25,
+            group: 'group1'
+        }
+    }
+    var roolsItemTo = {
+        'item.name': 'item.name',
+        'item.price': 'item.price',
+        'item.count': 'item.count',
+        'group.name': 'item.group'
+    }
+    var target = {
+        item: {
+            name: null,
+            price: null,
+            count: null
+        },
+        group: {
+            name: null
+        }
+    }
+    _.set(target, 'item.name', _.get(source, _.get(roolsItemTo, 'item.name')))
+    _.set(target, 'item.price', _.get(source, _.get(roolsItemTo, 'item.price')))
+    _.set(target, 'item.count', _.get(source, _.get(roolsItemTo, 'item.count')))
+    _.set(target, 'group.name', _.get(source, _.get(roolsItemTo, 'group.name')))
+    console.log(target)
 }
